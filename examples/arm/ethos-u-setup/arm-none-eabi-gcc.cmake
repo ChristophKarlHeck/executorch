@@ -20,7 +20,7 @@
 # modified to align better with cs300 platform
 
 set(TARGET_CPU
-    "cortex-m55"
+    "cortex-m4"
     CACHE STRING "Target CPU"
 )
 string(TOLOWER ${TARGET_CPU} CMAKE_SYSTEM_PROCESSOR)
