@@ -11,6 +11,7 @@ import argparse
 import logging
 
 import torch
+from torch.export import export_for_training
 
 from executorch.backends.arm.arm_backend import ArmCompileSpecBuilder
 from executorch.backends.arm.arm_partitioner import ArmPartitioner
@@ -196,7 +197,8 @@ if __name__ == "__main__":
     model = model.eval()
 
     # pre-autograd export. eventually this will become torch.export
-    model = torch._export.capture_pre_autograd_graph(model, example_inputs)
+    exported_program = export_for_training(model, example_inputs)
+    model = exported_program._graph_module
 
     # Quantize if required
     if args.quantize:
