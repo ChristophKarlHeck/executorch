@@ -9,6 +9,7 @@ executorch.egg-info
 pip-out/
 __pycache__/
 build
+executorch_venv
 
 # Any exported models and profiling outputs
 *.pte
