@@ -56,9 +56,9 @@ endif()
 # dependencies.
 
 # For Corstone-300 FVP builds we put models into the larger DRAM area
-set(MEMORY_MODEL "dram")
-set(MEMORY_ARENA "dram")
-add_subdirectory(${ETHOS_SDK_PATH}/core_platform/targets/corstone-300 target)
+#set(MEMORY_MODEL "dram")
+#set(MEMORY_ARENA "dram")
+#add_subdirectory(${ETHOS_SDK_PATH}/core_platform/targets/corstone-300 target)
 
 # Dependencies from the ExecuTorch build
 add_library(executorch STATIC IMPORTED)
@@ -134,21 +134,26 @@ endif()
 add_executable(arm_executor_runner)
 
 target_sources(
-  arm_executor_runner PRIVATE arm_executor_runner.cpp arm_perf_monitor.cpp
+  arm_executor_runner PRIVATE
+  arm_executor_runner.cpp
+  arm_perf_monitor.cpp
+  startup_stm32wb55xx.S
 )
 
 # Include the target's bare-metal linker script
-ethosu_eval_link_options(arm_executor_runner)
+#ethosu_eval_link_options(arm_executor_runner)
+set(LINKER_SCRIPT "${CMAKE_SOURCE_DIR}/mbed-nucleo-wb55rg.link_script.ld")
+set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -T${LINKER_SCRIPT}")
 
 # Need whole-archive to ensure C++ ctor's are called - this may be wasteful for
 # bin size as we link in a number of other symbols
 target_link_libraries(
   arm_executor_runner
   extension_runner_util
-  ethosu_target_init
+  #ethosu_target_init
   executorch
   "-Wl,--whole-archive"
-  executorch_delegate_ethos_u
+ # executorch_delegate_ethos_u
   quantized_ops_lib
   portable_ops_lib
   quantized_kernels

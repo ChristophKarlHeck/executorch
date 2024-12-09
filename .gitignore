@@ -10,6 +10,7 @@ pip-out/
 __pycache__/
 build
 executorch_venv
+cmake-out-aot-lib
 
 # Any exported models and profiling outputs
 *.pte
