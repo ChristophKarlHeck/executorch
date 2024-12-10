@@ -4,7 +4,7 @@
 # LICENSE file in the root directory of this source tree.
 
 cmake_minimum_required(VERSION 3.20)
-project(arm_executor_runner)
+project(arm_executor_runner LANGUAGES C CXX ASM)
 
 option(SEMIHOSTING "Enable semihosting" OFF)
 
@@ -137,13 +137,15 @@ target_sources(
   arm_executor_runner PRIVATE
   arm_executor_runner.cpp
   arm_perf_monitor.cpp
-  startup_stm32wb55xx.S
+  ${CMAKE_SOURCE_DIR}/startup_stm32wb55xx.S
 )
 
 # Include the target's bare-metal linker script
 #ethosu_eval_link_options(arm_executor_runner)
 set(LINKER_SCRIPT "${CMAKE_SOURCE_DIR}/mbed-nucleo-wb55rg.link_script.ld")
 set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -T${LINKER_SCRIPT}")
+
+set_source_files_properties(startup_stm32wb55xx.S PROPERTIES LANGUAGE ASM)
 
 # Need whole-archive to ensure C++ ctor's are called - this may be wasteful for
 # bin size as we link in a number of other symbols
