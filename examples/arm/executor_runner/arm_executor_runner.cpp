@@ -32,7 +32,7 @@
 #ifdef SEMIHOSTING
 // TODO: Verify the section attribute to match the linker script
 //       pending MLETORCH-39
-const size_t input_allocation_pool_size = 1 * 1024 * 1024;
+const size_t input_allocation_pool_size = 1 * 1024;
 unsigned char __attribute__((
     section("network_model_sec"),
     aligned(16))) input_allocation_pool[input_allocation_pool_size];
@@ -60,12 +60,12 @@ using executorch::runtime::Span;
 using executorch::runtime::Tag;
 using executorch::runtime::TensorInfo;
 
-#define METHOD_ALLOCATOR_POOL_SIZE (70 * 1024 * 1024)
+#define METHOD_ALLOCATOR_POOL_SIZE (1 * 1024)
 unsigned char __attribute__((
     section("network_model_sec"),
     aligned(16))) method_allocation_pool[METHOD_ALLOCATOR_POOL_SIZE];
 
-const size_t temp_allocation_pool_size = 1 * 1024 * 1024;
+const size_t temp_allocation_pool_size = 1 * 1024;
 unsigned char __attribute__((
     section("network_model_sec"),
     aligned(16))) temp_allocation_pool[temp_allocation_pool_size];
